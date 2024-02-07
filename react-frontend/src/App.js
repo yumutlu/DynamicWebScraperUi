@@ -3,14 +3,15 @@ import axios from "axios";
 
 function App() {
   const [url, setUrl] = useState("");
-  const [headings, setHeadings] = useState([]);
+  const [tag, setTag] = useState(""); // Tag state'i ekleniyor
+  const [data, setData] = useState([]); // headings yerine genel bir isim kullanıldı
 
-  const fetchHeadings = async () => {
+  const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/getHeadings?url=${url}`
+        `http://localhost:3001/getData?url=${url}&tag=${tag}` // URL ve tag parametrelerini gönder
       );
-      setHeadings(response.data);
+      setData(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -25,8 +26,18 @@ function App() {
     boxSizing: "border-box",
     transition: "border 0.3s",
   };
+  const inputTagStyle = {
+    width: "10%",
+    padding: "15px 20px",
+    margin: "10px 0",
+    borderRadius: "10px",
+    border: "2px solid #ddd",
+    boxSizing: "border-box",
+    transition: "border 0.3s",
+  };
 
   const buttonStyle = {
+    width: "10%",
     padding: "15px 20px",
     borderRadius: "10px",
     border: "none",
@@ -49,28 +60,45 @@ function App() {
   };
 
   return (
-    <div className="App" style={{ textAlign: "justify", padding: "20px" }}>
+    <div
+      className="App"
+      style={{
+        textAlign: "center",
+        padding: "20px",
+      }}
+    >
+      <div>
+        <span>Enter url</span>
+      </div>
+
       <input
         type="text"
         value={url}
         onChange={(e) => setUrl(e.target.value)}
         placeholder="Enter URL"
         style={inputStyle}
-        onFocus={(e) => (e.target.style.borderColor = "#4CAF50")}
-        onBlur={(e) => (e.target.style.borderColor = "#ddd")}
+      />
+      <div>
+        <span>Enter Html Tag</span>
+      </div>
+
+      <input
+        type="text"
+        value={tag}
+        onChange={(e) => setTag(e.target.value)}
+        placeholder="Enter HTML Tag" // Yeni input HTML tag için
+        style={inputTagStyle}
       />
       <button
         style={buttonStyle}
-        onClick={fetchHeadings}
-        onMouseEnter={(e) => (e.target.style.backgroundColor = "#45a049")}
-        onMouseLeave={(e) => (e.target.style.backgroundColor = "#4CAF50")}
+        onClick={fetchData} // Fonksiyon ismi güncellendi
       >
         Get Data !
       </button>
       <ul style={listStyle}>
-        {headings.map((heading, index) => (
+        {data.map((element, index) => (
           <li key={index} style={listItemStyle}>
-            {heading}
+            {element}
           </li>
         ))}
       </ul>
