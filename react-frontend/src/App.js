@@ -3,13 +3,13 @@ import axios from "axios";
 
 function App() {
   const [url, setUrl] = useState("");
-  const [tag, setTag] = useState(""); // Tag state'i ekleniyor
-  const [data, setData] = useState([]); // headings yerine genel bir isim kullanıldı
+  const [tag, setTag] = useState("");
+  const [data, setData] = useState([]);
 
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/getData?url=${url}&tag=${tag}` // URL ve tag parametrelerini gönder
+        `http://localhost:3001/getData?url=${url}&tag=${tag}`
       );
       setData(response.data);
     } catch (error) {
